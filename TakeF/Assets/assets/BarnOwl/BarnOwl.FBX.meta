@@ -1,0 +1,475 @@
+fileFormatVersion: 2
+guid: 3597503def07cbb45a71e8580b454d29
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: BarnOwl
+    100004: Bone024
+    100006: Bone024(mirrored)
+    100008: Bone025
+    100010: Bone025(mirrored)
+    100012: Bone028
+    100014: Bone028(mirrored)
+    100016: Bone029
+    100018: Bone029(mirrored)
+    100020: Bone032
+    100022: Bone032(mirrored)
+    100024: Bone033
+    100026: Bone033(mirrored)
+    100028: Bone036
+    100030: Bone036(mirrored)
+    100032: Bone045
+    100034: Bone048
+    100036: Bone049
+    100038: Bone051
+    100040: Digit01_L(mirrored)
+    100042: Digit01_R
+    100044: Digit02_L(mirrored)
+    100046: Digit02_R
+    100048: Digit03_L(mirrored)
+    100050: Digit03_R
+    100052: Digit04_L(mirrored)
+    100054: Digit04_R
+    100056: Feather01_L(mirrored)
+    100058: Feather01_R
+    100060: Feather02_L(mirrored)
+    100062: Feather02_R
+    100064: Femur_L(mirrored)
+    100066: Femur_R
+    100068: Foot_L(mirrored)
+    100070: Foot_R
+    100072: Head
+    100074: Humerus_L(mirrored)
+    100076: Humerus_R
+    100078: Mandible
+    100080: Maxilla
+    100082: Metacarpals_L(mirrored)
+    100084: Metacarpals_R
+    100086: Neck
+    100088: Pelvis
+    100090: Point001
+    100092: Pubis
+    100094: RibCage
+    100096: Tail
+    100098: Tarsus_L(mirrored)
+    100100: Tarsus_R
+    100102: Tibia_L(mirrored)
+    100104: Tibia_R
+    100106: TopoSurface001
+    100108: Ulna_L(mirrored)
+    100110: Ulna_R
+    400000: BarnOwl
+    400002: //RootNode
+    400004: Bone024
+    400006: Bone024(mirrored)
+    400008: Bone025
+    400010: Bone025(mirrored)
+    400012: Bone028
+    400014: Bone028(mirrored)
+    400016: Bone029
+    400018: Bone029(mirrored)
+    400020: Bone032
+    400022: Bone032(mirrored)
+    400024: Bone033
+    400026: Bone033(mirrored)
+    400028: Bone036
+    400030: Bone036(mirrored)
+    400032: Bone045
+    400034: Bone048
+    400036: Bone049
+    400038: Bone051
+    400040: Digit01_L(mirrored)
+    400042: Digit01_R
+    400044: Digit02_L(mirrored)
+    400046: Digit02_R
+    400048: Digit03_L(mirrored)
+    400050: Digit03_R
+    400052: Digit04_L(mirrored)
+    400054: Digit04_R
+    400056: Feather01_L(mirrored)
+    400058: Feather01_R
+    400060: Feather02_L(mirrored)
+    400062: Feather02_R
+    400064: Femur_L(mirrored)
+    400066: Femur_R
+    400068: Foot_L(mirrored)
+    400070: Foot_R
+    400072: Head
+    400074: Humerus_L(mirrored)
+    400076: Humerus_R
+    400078: Mandible
+    400080: Maxilla
+    400082: Metacarpals_L(mirrored)
+    400084: Metacarpals_R
+    400086: Neck
+    400088: Pelvis
+    400090: Point001
+    400092: Pubis
+    400094: RibCage
+    400096: Tail
+    400098: Tarsus_L(mirrored)
+    400100: Tarsus_R
+    400102: Tibia_L(mirrored)
+    400104: Tibia_R
+    400106: TopoSurface001
+    400108: Ulna_L(mirrored)
+    400110: Ulna_R
+    4300000: BarnOwl
+    7400000: barnowl_takeoff
+    7400002: barnowl_flying
+    7400004: barnowl_landing
+    7400006: barnowl_walking
+    7400008: barnowl_catch
+    7400010: barnowl_eating
+    7400012: barnowl_death
+    7400014: barnowl_glide
+    7400016: barnowl_hited
+    7400018: barnowl_idle
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: BarnOwl
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: barnowl_takeoff
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 28
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: barnowl_flying
+      takeName: Take 001
+      firstFrame: 28
+      lastFrame: 52
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: barnowl_landing
+      takeName: Take 001
+      firstFrame: 52
+      lastFrame: 80
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: barnowl_walking
+      takeName: Take 001
+      firstFrame: 82
+      lastFrame: 106
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: barnowl_catch
+      takeName: Take 001
+      firstFrame: 108
+      lastFrame: 136
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: barnowl_eating
+      takeName: Take 001
+      firstFrame: 139
+      lastFrame: 214
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: barnowl_death
+      takeName: Take 001
+      firstFrame: 217
+      lastFrame: 238
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: barnowl_glide
+      takeName: Take 001
+      firstFrame: 242
+      lastFrame: 266
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: barnowl_hited
+      takeName: Take 001
+      firstFrame: 266
+      lastFrame: 274
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: barnowl_idle
+      takeName: Take 001
+      firstFrame: 277
+      lastFrame: 333
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

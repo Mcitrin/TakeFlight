@@ -28,3 +28,10 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+TakeF/Assets/Verdant Hills/
+TakeF/Library/BuildSettings.asset
+TakeF/Library/ShaderCache/
+TakeF/build_Data/
+TakeF/Library/metadata/
+TakeF/Assets/sfx/
+TakeF/Assets/assets/BarnOwl/Textures/BarnOwl_N.png.meta
