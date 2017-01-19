@@ -34,7 +34,7 @@ public class Owl : MonoBehaviour
     {
         //animationManager.setBool("glide", true);
         distToGround = GetComponent<CapsuleCollider>().bounds.extents.y;
-        maxDist = (distToGround + 10);
+        maxDist = (distToGround + 5);
     }
 
     void FlightCam()
@@ -61,6 +61,10 @@ public class Owl : MonoBehaviour
 
     void GetFlightInput()
     {
+
+        //Debug.Log(transform.forward);
+        //
+        //transform.rotation = Quaternion.LookRotation(new Vector3(transform.forward.x, 0, transform.forward.z), Vector3.up);
         // gravity
         speed -= transform.forward.y * Time.deltaTime * 20.0f;
 
@@ -69,29 +73,32 @@ public class Owl : MonoBehaviour
 
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit, maxDist))
-        {
-            if (hit.transform.gameObject.tag == "ground")
-            {
-                percentageToGround = -(((transform.position.y - hit.point.y) / maxDist) - 1);
-                //Debug.Log(percentageToGround);
-                if (faceingUp < .25f)
-                {
-                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(new Vector3(transform.forward.x, transform.localEulerAngles.y, transform.forward.z), Vector3.up), percentageToGround * Time.deltaTime + .05f);
-                    futureTime = Time.time + .15f;
-                }
-            }
-        }
+      if (Physics.Raycast(transform.position, transform.forward, out hit, maxDist))
+      {
+          if (hit.transform.gameObject.tag == "ground")
+          {
+                //percentageToGround = -(((transform.position.y - hit.point.y) / maxDist) - 1);
+                percentageToGround = -((Vector3.Distance(transform.position, hit.point) / maxDist) - 1);
 
-        if(futureTime != 0 && Time.time >= futureTime)
-        {
-            state = OwlStates.landing;
-            futureTime = 0;
-        }
+                ////Debug.Log(percentageToGround);
+
+                transform.rotation = Quaternion.LerpUnclamped(transform.rotation, Quaternion.LookRotation(Vector3.up,-transform.forward), percentageToGround * Time.deltaTime + .025f);
+
+            }
+      }
+
+
+        //if(futureTime != 0 && Time.time >= futureTime)
+        //{
+        //    state = OwlStates.landing;
+        //    futureTime = 0;
+        //}
+
 
         // pitch
         if (Input.GetAxis("Vertical") > 0) // rotate down
         {
+          
             if (faceingUp > -1)
                 transform.RotateAround(transform.position,
                 transform.right, Input.GetAxis("Vertical") * 2.5f * (Time.deltaTime + 1));
@@ -108,7 +115,7 @@ public class Owl : MonoBehaviour
         if (Input.GetAxis("Horizontal") != 0)
         {
             transform.RotateAround(transform.position, Vector3.up, (Input.GetAxis("Horizontal") * 2.5f * (Time.deltaTime + 1)));
-            transform.RotateAround(transform.position, Vector3.up, (Input.GetAxis("RHorizontal") * 2.5f * (Time.deltaTime + 1)));
+            //transform.RotateAround(transform.position, Vector3.up, (Input.GetAxis("RHorizontal") * 2.5f * (Time.deltaTime + 1)));
 
             if (Input.GetAxis("Horizontal") == -1)
             {
@@ -176,7 +183,8 @@ public class Owl : MonoBehaviour
             case OwlStates.landing:
 
                 // move forward
-                transform.position += transform.forward * Time.deltaTime * speed + Vector3.down;
+                //transform.position = Vector3.MoveTowards(transform.position, landingPoint + transform.position, .5f);
+                
                 FlightCam();
                 break;
             case OwlStates.landed:
@@ -227,7 +235,7 @@ public class Owl : MonoBehaviour
         dif = Vector3.Dot(Vector3.up, transform.forward);
         faceingUp = Mathf.Round((dif)*4)/4;
 
-        Debug.Log(faceingUp);
+        //Debug.Log(Input.GetAxis("RVertical"));
 
     }
 
