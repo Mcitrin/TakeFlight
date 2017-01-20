@@ -24,7 +24,7 @@ public class Claw : MonoBehaviour {
         if (coll.gameObject.tag == "prey" || coll.gameObject.tag == "branch" && !closeThings.Contains(coll.gameObject))
         {
             closeThings.Add(coll.gameObject);
-            Debug.Log(coll.name);
+            //Debug.Log(coll.name);
         }
     }
 
