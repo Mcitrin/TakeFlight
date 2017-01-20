@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Owl : MonoBehaviour
 {
-    public enum OwlStates { flying, glide, landing, landed, attacking }
+    public enum OwlStates { flying, glide, landing, landed, attacking, branching, branched}
 
     public OwlStates state = OwlStates.glide;
 
@@ -13,8 +13,10 @@ public class Owl : MonoBehaviour
     public float speed = 5.0f;
     public Camera cam;
     public float faceingUp;
+    public Transform camLead;
     public Transform camReset;
     public GameObject head;
+    public Claw claw;
 
     float MAX_SPEED = 35;
     float MIN_SPEED = 5;
@@ -24,6 +26,8 @@ public class Owl : MonoBehaviour
 
     Vector3 landingPoint;
     Vector3 moveCamTo;
+
+    bool still = false;
 
     // Use this for initialization
     void Start()
@@ -54,13 +58,74 @@ public class Owl : MonoBehaviour
         }
 
     }
+    void GroundCam()
+    {
+        Vector3 norm = Vector3.Normalize(head.transform.position - cam.transform.position);
+        float angle = -Mathf.Asin(norm.y);
+
+        cam.transform.LookAt(head.transform);
+        cam.transform.position = Vector3.MoveTowards(cam.transform.position, camLead.transform.position, .5f);
+
+        if (Input.GetAxis("RVertical") > 0) // rotate up
+        {
+            if (angle < (Mathf.PI * (1.0f / 4.0f)))
+            {
+                camLead.transform.RotateAround(head.transform.position, cam.transform.right, Input.GetAxis("RVertical"));
+                //camReset.transform.RotateAround(head.transform.position, cam.transform.right, Input.GetAxis("RVertical"));
+            }
+        }
+        if (transform.position.y > camLead.transform.position.y - .25f)
+        {
+            camLead.transform.position = new Vector3(camLead.transform.position.x, transform.position.y + .25f, camLead.transform.position.z);
+            //camReset.transform.position = new Vector3(camReset.transform.position.x, transform.position.y + .25f, camReset.transform.position.z);
+        }
+
+        if (transform.position.y < camLead.transform.position.y - .25f)
+        {
+            if (Input.GetAxis("RVertical") < 0) // rotate down
+            {
+                if (angle > -(Mathf.PI * (1.0f / 4.0f)))
+                {
+                    camLead.transform.RotateAround(head.transform.position, cam.transform.right, Input.GetAxis("RVertical"));
+                    //camReset.transform.RotateAround(head.transform.position, cam.transform.right, Input.GetAxis("RVertical"));
+                }
+            }
+        }
+
+        if (still) // owl is still
+        {
+            camLead.transform.RotateAround(head.transform.position, Vector3.up, Input.GetAxis("RHorizontal"));
+        }
+        else // owl is moveing
+        {
+            //camLead.transform.position = Vector3.MoveTowards(camLead.transform.position, camReset.transform.position, .5f);
+            transform.Rotate(0.0f, (int)Input.GetAxis("RHorizontal") * 2.5f, 0.0f);
+        }
+        
+    }
 
     void GetFlightInput()
     {
+        for (int i = 0; i < claw.closeThings.Count; i++)
+        {
+            if(Vector3.Distance(transform.position,claw.closeThings[i].transform.position) <= maxDist + 5)
+            {
+                claw.closeThings.Remove(claw.closeThings[i]);
+                landingPoint = claw.closeThings[i].transform.position;
+                if (claw.closeThings[i].tag == "prey")
+                {
+                    state = OwlStates.attacking;
+                }
+                    else
+                {
+                    state = OwlStates.branching;
+                }
 
-       
-        // gravity
-        speed -= transform.forward.y * Time.deltaTime * 20.0f;
+            }
+        }
+
+            // gravity
+            speed -= transform.forward.y * Time.deltaTime * 20.0f;
 
         // move forward
         transform.position += transform.forward * Time.deltaTime * speed;
@@ -103,8 +168,8 @@ public class Owl : MonoBehaviour
         // yaw
         if (Input.GetAxis("Horizontal") != 0)
         {
-            transform.RotateAround(transform.position, Vector3.up, (Input.GetAxis("Horizontal") * 2.5f * (Time.deltaTime + 1)));
-            //transform.RotateAround(transform.position, Vector3.up, (Input.GetAxis("RHorizontal") * 2.5f * (Time.deltaTime + 1)));
+            transform.RotateAround(transform.position, Vector3.up, (Input.GetAxis("Horizontal") * 1.5f * (Time.deltaTime + 1)));
+            //transform.RotateAround(transform.position, Vector3.up, (Input.GetAxis("RHorizontal") * 1.5f * (Time.deltaTime + 1)));
 
             if (Input.GetAxis("Horizontal") == -1)
             {
@@ -114,6 +179,7 @@ public class Owl : MonoBehaviour
             {
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(transform.forward, (Vector3.up + Camera.main.transform.right).normalized), 5 * Time.deltaTime);
             }
+
         }
 
         else
@@ -138,35 +204,17 @@ public class Owl : MonoBehaviour
 
     void GetGroundInput()
     {
-        Vector3 norm = Vector3.Normalize(head.transform.position - camReset.transform.position);
-
-        float angle = -Mathf.Asin(norm.y);
-        
-        if (Input.GetAxis("RVertical") > 0) // rotate up
+        if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
         {
-            if (angle < (Mathf.PI * (1.0f / 4.0f)))
-                camReset.transform.RotateAround(head.transform.position, cam.transform.right, Input.GetAxis("RVertical"));
+            still = false;
+            animationManager.ChangeState("idle", "walk");
+        }
+        else
+        { 
+        still = true;
+        animationManager.ChangeState("walk", "idle");
         }
 
-
-        if (transform.position.y > camReset.transform.position.y - .25f)
-            camReset.transform.position = new Vector3(camReset.transform.position.x, transform.position.y + .25f, camReset.transform.position.z);
-
-        if (transform.position.y < camReset.transform.position.y - .25f)
-        {
-            if (Input.GetAxis("RVertical") < 0) // rotate down
-            {
-                if (angle > -(Mathf.PI * (1.0f / 4.0f)))
-                    camReset.transform.RotateAround(head.transform.position, camReset.transform.right, Input.GetAxis("RVertical"));
-            }
-        }
-
-
-        cam.transform.LookAt(head.transform);
-        //cam.transform.rotation = Quaternion.RotateTowards(cam.transform.rotation, Quaternion.LookRotation(head.transform.position - transform.position), 0f);
-        cam.transform.position = Vector3.MoveTowards(cam.transform.position, camReset.transform.position, .5f);
-        
-        transform.Rotate(0.0f, (int)Input.GetAxis("RHorizontal") * 2.5f, 0.0f);
         transform.position += (transform.forward * Input.GetAxis("Vertical") / 4.5f);
         transform.position += (transform.right * Input.GetAxis("Horizontal") / 4.5f);
     }
@@ -187,32 +235,39 @@ public class Owl : MonoBehaviour
         switch (state)
         {
             case OwlStates.flying:
+                GetFlightInput();
+                FlightCam();
 
                 transform.position += Vector3.up * Time.deltaTime * 15;
                 if (Input.GetButtonUp("A"))
                     state = OwlStates.glide;
-
                 break;
+
             case OwlStates.glide:
+                GetFlightInput();
+                FlightCam();
 
                 if (Input.GetButton("A"))
                     state = OwlStates.flying;
-
                 break;
+
             case OwlStates.landing:
-
-                // move forward
-                transform.position = Vector3.MoveTowards(transform.position, landingPoint, .5f);
-                transform.rotation = Quaternion.LerpUnclamped(transform.rotation, Quaternion.LookRotation(new Vector3(transform.forward.x,0,transform.forward.z),Vector3.up),Time.deltaTime + .025f);
-
-                //FlightCam();
-                cam.transform.LookAt(head.transform);
-                cam.transform.position = Vector3.MoveTowards(cam.transform.position, camReset.transform.position, .5f);
+                // move toward landing point
+                Land();
                 break;
+
             case OwlStates.landed:
-
+                GroundCam();
+                GetGroundInput();
                 break;
+
             case OwlStates.attacking:
+                Land();
+                break;
+            case OwlStates.branching:
+                Land();
+                break;
+            case OwlStates.branched:
 
                 break;
             default:
@@ -230,26 +285,27 @@ public class Owl : MonoBehaviour
             speed = 20.0f;
         }
     }
+
+    void Land()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, landingPoint, .5f);
+        transform.rotation = Quaternion.LerpUnclamped(transform.rotation, Quaternion.LookRotation(new Vector3(transform.forward.x, 0, transform.forward.z), Vector3.up), Time.deltaTime + .025f);
+
+        //FlightCam();
+        cam.transform.LookAt(head.transform);
+        cam.transform.position = Vector3.MoveTowards(cam.transform.position, camLead.transform.position, .5f);
+    }
     
     // Update is called once per frame
     void Update()
-    {
-        if (state == OwlStates.flying || state == OwlStates.glide)
-        {
-            GetFlightInput();
-            FlightCam();
-        }
-
-        if (state == OwlStates.landed)
-            GetGroundInput();
-
+    {        
         UpdateAimationMan();
         UpdateState();
 
         dif = Vector3.Dot(Vector3.up, transform.forward);
         faceingUp = Mathf.Round((dif) * 4) / 4;
 
-        Debug.Log((int)Input.GetAxis("RHorizontal"));
+        
 
     }
 
