@@ -4,10 +4,10 @@ using System.Collections.Generic;
 public class Claw : MonoBehaviour {
 
     public SphereCollider sphere;
-    public Owl owl;
     float bounds;
 
-    public List<GameObject> closeThings;
+    public List<GameObject> branches;
+    public List<GameObject> prey;
 
     // Use this for initialization
     void Start () {
@@ -21,20 +21,25 @@ public class Claw : MonoBehaviour {
 
     void OnTriggerEnter(Collider coll)
     {
-        if (coll.gameObject.tag == "prey" || coll.gameObject.tag == "branch" && !closeThings.Contains(coll.gameObject))
+        if (coll.gameObject.tag == "prey"  && !prey.Contains(coll.gameObject) && !coll.GetComponent<Agent>().dead)
         {
-            closeThings.Add(coll.gameObject);
+            prey.Add(coll.gameObject);
             //Debug.Log(coll.name);
         }
+
+        else if (coll.gameObject.tag == "branch" && !branches.Contains(coll.gameObject))
+            branches.Add(coll.gameObject);
     }
 
      void OnTriggerExit(Collider coll)
     {
-        if (coll.gameObject.tag == "prey" || coll.gameObject.tag == "branch" && closeThings.Contains(coll.gameObject))
+        if (coll.gameObject.tag == "prey" && prey.Contains(coll.gameObject))
         {
-            Debug.Log(coll.name);
-            closeThings.Remove(coll.gameObject);
+            //Debug.Log(coll.name);
+            prey.Remove(coll.gameObject);
         }
+        else if (coll.gameObject.tag == "branch" && branches.Contains(coll.gameObject))
+            branches.Add(coll.gameObject);
     }
 
 }

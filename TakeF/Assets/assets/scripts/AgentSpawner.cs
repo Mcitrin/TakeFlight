@@ -54,7 +54,7 @@ public class AgentSpawner : MonoBehaviour {
     {
         agents.Insert(0,(GameObject)Instantiate(agent, transform.position, transform.rotation));
         agents[0].GetComponent<Agent>().targetNode = start;
-        agents[0].GetComponent<Agent>().Train = Turr;
+        //agents[0].GetComponent<Agent>().Train = Turr;
 
         agents[0].GetComponent<Agent>().body.GetComponent<SkinnedMeshRenderer>().material = mats[Random.Range(0, mats.Count)];
     }

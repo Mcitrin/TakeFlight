@@ -68,6 +68,7 @@ public class AnimationManager : MonoBehaviour {
         anim.SetBool("walk", false);
         anim.SetBool("flying", false);
         anim.SetBool("glide", false);
+        anim.SetBool("catch", false);
     }
 
     public void setBool(string bOOl, bool trueOrFalse)

@@ -29,7 +29,7 @@ public class Agent : MonoBehaviour {
 
     Vector3 prev;
 
-    public Terrain Train;
+    //public Terrain Train;
 
     public Animator anim;
 
@@ -57,7 +57,7 @@ public class Agent : MonoBehaviour {
 	void Update ()
     {
         
-        terrainHeightAtOurPosition = Train.SampleHeight(transform.position);
+        //terrainHeightAtOurPosition = Train.SampleHeight(transform.position);
         //if (owl.claws.heildItem != null)
         //{
         //    if (owl.claws.heildItem == gameObject)
@@ -67,7 +67,7 @@ public class Agent : MonoBehaviour {
         //    }
         //}
 
-        if (!dead)
+        if (!dead & state != AgenStates.dead)
         {
 
             agent.destination = (target);

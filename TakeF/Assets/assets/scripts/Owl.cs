@@ -17,6 +17,7 @@ public class Owl : MonoBehaviour
     public Transform camReset;
     public GameObject head;
     public Claw claw;
+    public GameObject blood;
 
     float MAX_SPEED = 35;
     float MIN_SPEED = 5;
@@ -26,6 +27,8 @@ public class Owl : MonoBehaviour
 
     Vector3 landingPoint;
     Vector3 moveCamTo;
+
+    GameObject prey;
 
     bool still = false;
 
@@ -92,7 +95,7 @@ public class Owl : MonoBehaviour
             }
         }
 
-        if (still) // owl is still
+        if (still || state == OwlStates.branched) // owl is still
         {
             camLead.transform.RotateAround(head.transform.position, Vector3.up, Input.GetAxis("RHorizontal"));
         }
@@ -106,29 +109,10 @@ public class Owl : MonoBehaviour
 
     void GetFlightInput()
     {
-        // if were close to prey or a branch
-        for (int i = 0; i < claw.closeThings.Count; i++)
-        {
-            if(Vector3.Distance(transform.position,claw.closeThings[i].transform.position) <= maxDist)
-            {
-                
-                if (claw.closeThings[i].tag == "prey")
-                {
-                    state = OwlStates.attacking;
-                    landingPoint = claw.closeThings[i].transform.position;
-                }
-                    else
-                {
-                    state = OwlStates.branching;
-                    landingPoint = claw.closeThings[i].transform.position + Vector3.up *.5f;
-                }
-                claw.closeThings.Remove(claw.closeThings[i]);
+        SearchForBranch();
 
-            }
-        }
-
-            // gravity
-            speed -= transform.forward.y * Time.deltaTime * 20.0f;
+        // gravitys effect on speed
+        speed -= transform.forward.y * Time.deltaTime * 20.0f;
 
         // move forward
         transform.position += transform.forward * Time.deltaTime * speed;
@@ -137,7 +121,14 @@ public class Owl : MonoBehaviour
        RaycastHit hit;
        if (Physics.Raycast(transform.position, transform.forward, out hit, maxDist))
        {
-           if (hit.transform.gameObject.tag == "ground")
+            if (claw.prey.Count != 0)
+            {
+                landingPoint = claw.prey[0].transform.position;
+                state = OwlStates.attacking;
+                animationManager.setBool("catch", true);
+                prey = claw.prey[0];
+            }
+            else if (hit.transform.gameObject.tag == "ground")
            {
                 //percentageToGround = -(((transform.position.y - hit.point.y) / maxDist) - 1);
                 //percentageToGround = -((Vector3.Distance(transform.position, hit.point) / (maxDist / 10)) - 1);
@@ -146,8 +137,12 @@ public class Owl : MonoBehaviour
 
                 //if (transform.position.y - hit.point.y < maxDist / 10)
                 //    transform.rotation = Quaternion.LerpUnclamped(transform.rotation, Quaternion.LookRotation(Vector3.up, -transform.forward), percentageToGround * Time.deltaTime + .025f);
-                landingPoint = hit.point;
-                state = OwlStates.landing;
+
+               
+                
+                    landingPoint = hit.point;
+                    state = OwlStates.landing;
+                
 
            }
        }
@@ -197,9 +192,7 @@ public class Owl : MonoBehaviour
             speed = MIN_SPEED;
         }
 
-        else
-
-        if (speed > MAX_SPEED) // max speed
+        else if (speed > MAX_SPEED) // max speed
         {
             speed = MAX_SPEED;
         }
@@ -237,7 +230,8 @@ public class Owl : MonoBehaviour
             animationManager.setBool("land", true);
         else if (state == OwlStates.landed || state == OwlStates.branched)
             animationManager.setBool("idle", true);
-
+        else if (state == OwlStates.attacking )
+            animationManager.setBool("catch", true);
     }
 
     void UpdateState()
@@ -272,6 +266,23 @@ public class Owl : MonoBehaviour
 
             case OwlStates.attacking:
                 Land();
+                Debug.Log("attack");
+                if (transform.position == landingPoint)
+                {
+                    StartCoroutine(Spurt());
+                    prey.GetComponent<NavMeshAgent>().Stop();
+                    prey.GetComponent<Agent>().state = Agent.AgenStates.dead;
+
+                    state = OwlStates.landed;
+                    transform.rotation = Quaternion.Euler(0, transform.localEulerAngles.y, 0);
+                    speed = 20.0f;
+
+                    
+                    
+
+                    claw.prey.Clear();
+                    //blood.SetActive(false);
+                }
                 break;
             case OwlStates.branching:
                 Land();
@@ -284,6 +295,7 @@ public class Owl : MonoBehaviour
                 }
                 break;
             case OwlStates.branched:
+                GroundCam();
                 if (Input.GetButtonDown("A"))
                 {
                     TakeOff();
@@ -305,18 +317,6 @@ public class Owl : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log(other.name);
-         if (other.gameObject.tag == "prey" && state == OwlStates.attacking)
-        {
-            //animationManager.setBool("land", true);
-            //state = OwlStates.landed;
-            transform.rotation = Quaternion.Euler(0, transform.localEulerAngles.y, 0);
-            speed = 20.0f;
-        }
-    }
-
     void Land()
     {
         transform.position = Vector3.MoveTowards(transform.position, landingPoint, .5f);
@@ -331,13 +331,40 @@ public class Owl : MonoBehaviour
     {
         animationManager.setBool("takeOff", true);
 
+        speed = 20.0f;
+
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(transform.forward, Vector3.up), 100 * Time.deltaTime);
         this.GetComponent<Rigidbody>().useGravity = false;
         state = OwlStates.flying;
 
         transform.position += Vector3.up * Time.deltaTime * 5;
     }
+
+    void SearchForBranch()
+    {
+        // if were close to a branch
+        //for (int i = 0; i < claw.branches.Count; i++)
+        //{
+            if (claw.branches.Count != 0)
+            {
+                if (Vector3.Distance(transform.position, claw.branches[0].transform.position) <= maxDist/2)
+                {
+                    state = OwlStates.branching;
+                    landingPoint = claw.branches[0].transform.position + Vector3.up * .5f;
+                    claw.branches.Clear();
+                }
+            }
+        //}
+    }
     
+    IEnumerator Spurt()
+    {
+        blood.SetActive(true);
+        yield return new WaitForSeconds(1);
+        blood.SetActive(false);
+
+    }
+
     // Update is called once per frame
     void Update()
     {        
