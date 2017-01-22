@@ -123,27 +123,13 @@ public class Owl : MonoBehaviour
        {
             if (claw.prey.Count != 0)
             {
-                landingPoint = claw.prey[0].transform.position;
-                state = OwlStates.attacking;
+                SearchForPrey();
                 animationManager.setBool("catch", true);
-                prey = claw.prey[0];
             }
             else if (hit.transform.gameObject.tag == "ground")
            {
-                //percentageToGround = -(((transform.position.y - hit.point.y) / maxDist) - 1);
-                //percentageToGround = -((Vector3.Distance(transform.position, hit.point) / (maxDist / 10)) - 1);
-
-                ////Debug.Log(percentageToGround);
-
-                //if (transform.position.y - hit.point.y < maxDist / 10)
-                //    transform.rotation = Quaternion.LerpUnclamped(transform.rotation, Quaternion.LookRotation(Vector3.up, -transform.forward), percentageToGround * Time.deltaTime + .025f);
-
-               
-                
                     landingPoint = hit.point;
                     state = OwlStates.landing;
-                
-
            }
        }
 
@@ -267,7 +253,7 @@ public class Owl : MonoBehaviour
             case OwlStates.attacking:
                 Land();
                 Debug.Log("attack");
-                if (transform.position == landingPoint)
+                if (Vector3.Distance(transform.position,landingPoint) < distToGround)
                 {
                     StartCoroutine(Spurt());
                     prey.GetComponent<NavMeshAgent>().Stop();
@@ -315,6 +301,10 @@ public class Owl : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, transform.localEulerAngles.y, 0);
             speed = 20.0f;
         }
+        if (collision.gameObject.tag == "static" && state == OwlStates.attacking)
+        {
+            state = OwlStates.glide;
+        }
     }
 
     void Land()
@@ -355,6 +345,25 @@ public class Owl : MonoBehaviour
                 }
             }
         //}
+    }
+
+    void SearchForPrey()
+    {
+        float neer = 100;
+        GameObject target = null;
+
+        for (int i = 0; i < claw.prey.Count; i++)
+        {
+            if(Vector3.Distance(transform.position,claw.prey[i].transform.position + transform.forward * 5) < neer)
+            {
+                neer = Vector3.Distance(transform.position, claw.prey[i].transform.position + transform.forward * 5);
+                target = claw.prey[i];
+            }
+
+            landingPoint = target.transform.position;
+            state = OwlStates.attacking;
+            prey = target;
+        }
     }
     
     IEnumerator Spurt()
