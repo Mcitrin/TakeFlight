@@ -86,7 +86,7 @@ public class grab : MonoBehaviour
             if (Vector3.Distance(closeThings[i].transform.position, this.transform.position) > bounds)
                 closeThings.Remove(closeThings[i]);
         }
-
+         
         if (bird.bState != Movement.BirdState.landed)/// flying
         {
             if (closeThings.Count > 0 && heildItem == null)

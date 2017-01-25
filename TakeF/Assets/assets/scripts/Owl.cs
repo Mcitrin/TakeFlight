@@ -117,16 +117,30 @@ public class Owl : MonoBehaviour
         // move forward
         transform.position += transform.forward * Time.deltaTime * speed;
 
+      //Debug.Log(Input.GetAxis("R2"));
+      if (claw.prey.Count > 0)
+      {
+        if (Input.GetAxis("R2") == 1)
+        {
+            Debug.Log("drag");
+            claw.PickUp(true);
+        }
+        if (Input.GetAxis("R2") == 0)
+        {
+            Debug.Log("drop");
+            claw.PickUp(false);
+        }
+      }
 
        RaycastHit hit;
-       if (Physics.Raycast(transform.position, transform.forward, out hit, maxDist))
+       if (Physics.Raycast(transform.position, transform.forward, out hit, distToGround + 5))
        {
-            if (claw.prey.Count != 0)
-            {
-                SearchForPrey();
-                animationManager.setBool("catch", true);
-            }
-            else if (hit.transform.gameObject.tag == "ground")
+          // if (claw.prey.Count != 0)
+          // {
+          //     SearchForPrey();
+          //     animationManager.setBool("catch", true);
+          // }
+             if (hit.transform.gameObject.tag == "ground")
            {
                     landingPoint = hit.point;
                     state = OwlStates.landing;
@@ -309,6 +323,11 @@ public class Owl : MonoBehaviour
 
     void Land()
     {
+        if (GetComponent<Rigidbody>().constraints == (RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation))
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
+        if (claw.heildItem != null)
+            claw.PickUp(false);
+
         transform.position = Vector3.MoveTowards(transform.position, landingPoint, .5f);
         transform.rotation = Quaternion.LerpUnclamped(transform.rotation, Quaternion.LookRotation(new Vector3(transform.forward.x, 0, transform.forward.z), Vector3.up), Time.deltaTime + .025f);
 
@@ -319,6 +338,9 @@ public class Owl : MonoBehaviour
 
     void TakeOff()
     {
+        if (GetComponent<Rigidbody>().constraints != RigidbodyConstraints.FreezePositionY)
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY |RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
         animationManager.setBool("takeOff", true);
 
         speed = 20.0f;

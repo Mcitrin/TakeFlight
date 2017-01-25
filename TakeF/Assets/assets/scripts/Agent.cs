@@ -9,11 +9,9 @@ public class Agent : MonoBehaviour {
     public AgenStates state = AgenStates.idle;
     Vector3 target;
 
-    float terrainHeightAtOurPosition;
-
     public Node targetNode;
 
-    public GameObject owl;
+    public Owl owl;
 
     bool walk;
     bool idle;
@@ -28,8 +26,6 @@ public class Agent : MonoBehaviour {
     public float radious = 80;
 
     Vector3 prev;
-
-    //public Terrain Train;
 
     public Animator anim;
 
@@ -49,7 +45,7 @@ public class Agent : MonoBehaviour {
         agent = GetComponent<NavMeshAgent>();
         Random.seed = (int)System.DateTime.Now.Ticks;
 
-        owl = GameObject.FindWithTag("bird");       
+        owl = GameObject.FindWithTag("bird").GetComponent<Owl>();       
         
     }
 	
@@ -57,7 +53,6 @@ public class Agent : MonoBehaviour {
 	void Update ()
     {
         
-        //terrainHeightAtOurPosition = Train.SampleHeight(transform.position);
         //if (owl.claws.heildItem != null)
         //{
         //    if (owl.claws.heildItem == gameObject)
@@ -138,14 +133,15 @@ public class Agent : MonoBehaviour {
 
                 anim.SetBool("dead", true);
 
-
-                if (transform.position.y > terrainHeightAtOurPosition)
-                    transform.position -= Vector3.up * .75f;
-
-                if (transform.position.y < terrainHeightAtOurPosition)
-                    transform.position = new Vector3(transform.position.x,terrainHeightAtOurPosition,transform.position.z);
-
-              
+               //if (owl.claw.heildItem != gameObject)
+               //{
+               //    if (transform.position.y > terrainHeightAtOurPosition)
+               //        transform.position -= Vector3.up * .75f;
+               //
+               //    if (transform.position.y < terrainHeightAtOurPosition)
+               //        transform.position = new Vector3(transform.position.x, terrainHeightAtOurPosition, transform.position.z);
+               //
+               //}
                 dead = true;
                 break;
 
