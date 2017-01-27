@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class Owl : MonoBehaviour
 {
+    Rigidbody rb; 
+
     public enum OwlStates { flying, glide, landing, landed, attacking, branching, branched}
 
     public OwlStates state = OwlStates.glide;
@@ -32,12 +34,25 @@ public class Owl : MonoBehaviour
 
     bool still = false;
 
+
+    float x;
+    float z;
+    Vector3 inputVec;
+    Quaternion lastForward;
+    Quaternion inputQuat;
+    Vector3 newVelocity;
+    float moveSpeed;
+    public float runSpeed = 6f;
+    float rotationSpeed = 40f;
+
     // Use this for initialization
     void Start()
     {
         //animationManager.setBool("glide", true);
         distToGround = GetComponent<CapsuleCollider>().bounds.extents.y;
         maxDist = (distToGround + 10);
+
+        rb = GetComponent<Rigidbody>();
     }
 
     void FlightCam()
@@ -67,33 +82,33 @@ public class Owl : MonoBehaviour
         float angle = -Mathf.Asin(norm.y);
 
         cam.transform.LookAt(head.transform);
-        cam.transform.position = Vector3.MoveTowards(cam.transform.position, camLead.transform.position, .5f);
+     //   cam.transform.position = Vector3.MoveTowards(cam.transform.position, camLead.transform.position, 1);
 
-        if (Input.GetAxis("RVertical") > 0) // rotate up
-        {
-            if (angle < (Mathf.PI * (1.0f / 4.0f)))
-            {
-                camLead.transform.RotateAround(head.transform.position, cam.transform.right, Input.GetAxis("RVertical"));
-                //camReset.transform.RotateAround(head.transform.position, cam.transform.right, Input.GetAxis("RVertical"));
-            }
-        }
-        if (transform.position.y > camLead.transform.position.y - .25f)
-        {
-            camLead.transform.position = new Vector3(camLead.transform.position.x, transform.position.y + .25f, camLead.transform.position.z);
-            //camReset.transform.position = new Vector3(camReset.transform.position.x, transform.position.y + .25f, camReset.transform.position.z);
-        }
-
-        if (transform.position.y < camLead.transform.position.y - .25f)
-        {
-            if (Input.GetAxis("RVertical") < 0) // rotate down
-            {
-                if (angle > -(Mathf.PI * (1.0f / 4.0f)))
-                {
-                    camLead.transform.RotateAround(head.transform.position, cam.transform.right, Input.GetAxis("RVertical"));
-                    //camReset.transform.RotateAround(head.transform.position, cam.transform.right, Input.GetAxis("RVertical"));
-                }
-            }
-        }
+     //   if (Input.GetAxis("RVertical") > 0) // rotate up
+     //   {
+     //       if (angle < (Mathf.PI * (1.0f / 4.0f)))
+     //       {
+     //           camLead.transform.RotateAround(head.transform.position, cam.transform.right, Input.GetAxis("RVertical"));
+     //           //camReset.transform.RotateAround(head.transform.position, cam.transform.right, Input.GetAxis("RVertical"));
+     //       }
+     //   }
+     //   if (transform.position.y > camLead.transform.position.y - .25f)
+     //   {
+     //       camLead.transform.position = new Vector3(camLead.transform.position.x, transform.position.y + .25f, camLead.transform.position.z);
+     //       //camReset.transform.position = new Vector3(camReset.transform.position.x, transform.position.y + .25f, camReset.transform.position.z);
+     //   }
+     //
+     //   if (transform.position.y < camLead.transform.position.y - .25f)
+     //   {
+     //       if (Input.GetAxis("RVertical") < 0) // rotate down
+     //       {
+     //           if (angle > -(Mathf.PI * (1.0f / 4.0f)))
+     //           {
+     //               camLead.transform.RotateAround(head.transform.position, cam.transform.right, Input.GetAxis("RVertical"));
+     //               //camReset.transform.RotateAround(head.transform.position, cam.transform.right, Input.GetAxis("RVertical"));
+     //           }
+     //       }
+     //   }
 
         if (still || state == OwlStates.branched) // owl is still
         {
@@ -214,9 +229,54 @@ public class Owl : MonoBehaviour
         {
             TakeOff();
         }
+
+        if (Input.GetKeyDown(KeyCode.Joystick1Button0))
+        {
+            rb.velocity += new Vector3(0, 10, 0);
+
+        }
+
+        Vector3 NextDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        if (NextDir != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(cam.transform.TransformDirection(NextDir));
+            transform.rotation = Quaternion.Euler(0, transform.localEulerAngles.y, 0);
+        }
+
+
+
+        if (NextDir != Vector3.zero)
+           moveSpeed = UpdateMovement(cam.transform.TransformDirection(NextDir));
+        else
+        {
+            if (!Input.GetKey(KeyCode.Joystick1Button0))
+            {
+                rb.velocity = Vector3.zero;
+            }
+            transform.rotation = transform.rotation;
+
+        }
         
-        transform.position += (transform.forward * Input.GetAxis("Vertical") / 4.5f);
-        transform.position += (transform.right * Input.GetAxis("Horizontal") / 4.5f);
+        // transform.position += (transform.forward * Input.GetAxis("Vertical") / 4.5f);
+        // transform.position += (transform.right * Input.GetAxis("Horizontal") / 4.5f);
+    }
+
+    float UpdateMovement(Vector3 inputV)
+    {
+        Vector3 motion = inputV;
+        
+        //reduce input for diagonal movement
+        if (motion.magnitude > 1)
+        {
+            motion.Normalize();
+        }
+
+        newVelocity = motion * runSpeed;
+        newVelocity.y = rb.velocity.y;
+        rb.velocity = newVelocity;
+
+        //return a movement value for the animator
+        return inputVec.magnitude;
     }
 
     void UpdateAimationMan()
